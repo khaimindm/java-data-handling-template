@@ -31,10 +31,39 @@ public class SimpleBigNumbersService implements BigNumbersService {
         int n = 2;
         int[] arrayProstChisel = new int[range];
         int[] arrayTemp = new int[1];
+        int array = 0;
         int p = 0;
-        int t = 1;
+        //int t = 2;
         int c = 2;
+        int arrayS = 0;
+        int number = 2;
+        //boolean flag = true;
 
+        while (arrayS < range) {
+            boolean flag = true;
+            int t = 2;
+
+            while (t * t <= number) {
+                if (number % t == 0) {
+                    flag = false;
+                    break;
+                }
+                t++;
+            }
+
+            if (flag == true) {
+                arrayProstChisel[array] = number;
+                arrayS++;
+            }
+        }
+
+
+
+
+
+
+
+/*
         for (int i=0; i<range; i++) {
 
             while (n * n <= c) {
@@ -51,7 +80,7 @@ public class SimpleBigNumbersService implements BigNumbersService {
 
 
         }
-
+*/
         //while (n)
 
         /*for (int i=0; i<1000; i++) {
