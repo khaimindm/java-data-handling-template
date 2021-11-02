@@ -28,9 +28,9 @@ public class SimpleBigNumbersService implements BigNumbersService {
         if (range == 0 || range == 1) {
             return null;
         }
-        int n = 2;
+        //int n = 2;
         int[] arrayProstChisel = new int[range];
-        int[] arrayTemp = new int[1];
+        //int[] arrayTemp = new int[1];
         int array = 0;
         int p = 0;
         //int t = 2;
@@ -53,45 +53,12 @@ public class SimpleBigNumbersService implements BigNumbersService {
 
             if (flag == true) {
                 arrayProstChisel[array] = number;
+                array++;
                 arrayS++;
+                number++;
             }
         }
 
-
-
-
-
-
-
-/*
-        for (int i=0; i<range; i++) {
-
-            while (n * n <= c) {
-                if (c % t == 0) {
-                    continue;
-                }
-                n++;
-                t++;
-            }
-
-            arrayProstChisel[p] = c;
-            c++;  //Число увеличивается вне цикла
-            p++;
-
-
-        }
-*/
-        //while (n)
-
-        /*for (int i=0; i<1000; i++) {
-            if (n % 2 != 0) {
-                arrayTemp[p] = n;
-            }
-            n++;
-        }*/
-
-
-
-        return null;
+        return arrayProstChisel[range];
     }
 }
