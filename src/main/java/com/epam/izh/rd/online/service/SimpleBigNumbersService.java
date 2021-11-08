@@ -28,22 +28,14 @@ public class SimpleBigNumbersService implements BigNumbersService {
         if (range == 0 || range == 1) {
             return null;
         }
-        BigInteger[] arrayProstChisel = new BigInteger[range + 1];
-        //int[] arrayTemp = new int[1];
+
         int array = 0;
         int arrayS = 0;
         BigInteger bigNumber = new BigInteger("2");
-        //int number = 2;
-
-        //int n = 2;
-        //int p = 0;
-        //int t = 2;
-        //int c = 2;
-        //boolean flag = true;
+        BigInteger[] arrayProstChisel = new BigInteger[range + 1];
 
         while (arrayS <= range) {
             boolean flag = true;
-            //boolean temp;
             BigInteger t = new BigInteger("2");
 
             while ( t.multiply(t).compareTo(bigNumber)<=0 ) {
@@ -59,6 +51,7 @@ public class SimpleBigNumbersService implements BigNumbersService {
                 array++;
                 arrayS++;
             }
+
             bigNumber = bigNumber.add(new BigInteger("1"));
 
         }
