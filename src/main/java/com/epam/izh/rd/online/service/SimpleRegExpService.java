@@ -49,48 +49,27 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String replacePlaceholders(double paymentAmount, double balance) {
-        String str = null;
-        try(FileReader reader = new FileReader("C:\\data\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt");
-            BufferedReader bufferedReader = new BufferedReader(reader)) {
-            str = bufferedReader.readLine();
+        String readLine = null;
+        try (FileReader reader = new FileReader("C:\\data\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt");
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
+            readLine = bufferedReader.readLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        int temp1 = 0;
-        int temp2 = 0;
-        String strTemp = null;
-        String strTemp1 = null;
-        String strTemp2 = null;
-        String strTemp3 = null;
-        String result = null;
-
-        //String accountRegex = "\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}";
-        String accountRegex = "(\\d{4}\\s)(\\d{4}\\s\\d{4})(\\s\\d{4})";
-        String input = str;
-        Pattern pattern = Pattern.compile(accountRegex);
-        Matcher matcher = pattern.matcher(input);
-        /*while (matcher.find()) {
-            temp1 = matcher.start();
-            strTemp = matcher.group();
-            strTemp1 = matcher.group(1);
-            strTemp2 = matcher.group(2);
-            strTemp3 = matcher.group(3);
-            temp2 = matcher.end();
-        }*/
+        String placeholdersRegex = "\\$\\{payment_amount\\}";
+        Pattern pattern = Pattern.compile(placeholdersRegex);
+        Matcher matcher = pattern.matcher(readLine);
+        StringBuffer result = new StringBuffer();
 
         while (matcher.find()) {
-            strTemp = matcher.group();
-            strTemp1 = matcher.group();
+            matcher.appendReplacement(result, "2");
         }
 
-        Pattern pattern1 = Pattern.compile("\\d4");
-        matcher.usePattern(pattern1);
+        matcher.appendTail(result);
 
-        result = strTemp1 + "**** ****" + strTemp3;
-
-        return str;
+        return result.toString();
     }
 }
