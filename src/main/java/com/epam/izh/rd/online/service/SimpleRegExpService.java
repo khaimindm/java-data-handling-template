@@ -28,37 +28,17 @@ public class SimpleRegExpService implements RegExpService {
             e.printStackTrace();
         }
 
-        String numberRegex = "\\d{4}\\s+\\d{4}\\s+\\d{4}\\s+\\d{4}";
+        String numberRegex = "(\\d{4}\\s+)(\\d{4}\\s+\\d{4})(\\s+\\d{4})";
         Pattern pattern = Pattern.compile(numberRegex);
         Matcher matcher = pattern.matcher(readLine);
-        int nAccountNumbers = 0;
-        int temp = 0;
-        int temp2 = 0;
-        String tempStr = null;
-        String tempStr2 = null;
-
+        StringBuffer result = new StringBuffer();
 
         while (matcher.find()) {
-            temp = matcher.start();
-            tempStr = matcher.group();
-            temp2 = matcher.end();
-            nAccountNumbers++;
+            matcher.appendReplacement(result, "$1" + "**** ****" + "$3");
         }
+        matcher.appendTail(result);
 
-        /*String numberRegex2 = "\\d";
-        Pattern pattern2 = Pattern.compile(numberRegex2);
-        Matcher matcher2 = pattern2.matcher(tempStr);*/
-
-        String str2 = new String(tempStr);
-        str2 = str2.replaceAll("\\s+\\d{4}\\s+", "*");
-
-        /*while (matcher2.find()) {
-            tempStr2 = matcher2.group();
-        }
-
-        String[] arrayAccount = new String[nAccountNumbers];*/
-
-        return readLine;
+        return result.toString();
     }
 
     /**
@@ -69,6 +49,48 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String replacePlaceholders(double paymentAmount, double balance) {
-        return null;
+        String str = null;
+        try(FileReader reader = new FileReader("C:\\data\\java-data-handling-template\\src\\main\\resources\\sensitive_data.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader)) {
+            str = bufferedReader.readLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int temp1 = 0;
+        int temp2 = 0;
+        String strTemp = null;
+        String strTemp1 = null;
+        String strTemp2 = null;
+        String strTemp3 = null;
+        String result = null;
+
+        //String accountRegex = "\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}";
+        String accountRegex = "(\\d{4}\\s)(\\d{4}\\s\\d{4})(\\s\\d{4})";
+        String input = str;
+        Pattern pattern = Pattern.compile(accountRegex);
+        Matcher matcher = pattern.matcher(input);
+        /*while (matcher.find()) {
+            temp1 = matcher.start();
+            strTemp = matcher.group();
+            strTemp1 = matcher.group(1);
+            strTemp2 = matcher.group(2);
+            strTemp3 = matcher.group(3);
+            temp2 = matcher.end();
+        }*/
+
+        while (matcher.find()) {
+            strTemp = matcher.group();
+            strTemp1 = matcher.group();
+        }
+
+        Pattern pattern1 = Pattern.compile("\\d4");
+        matcher.usePattern(pattern1);
+
+        result = strTemp1 + "**** ****" + strTemp3;
+
+        return str;
     }
 }
