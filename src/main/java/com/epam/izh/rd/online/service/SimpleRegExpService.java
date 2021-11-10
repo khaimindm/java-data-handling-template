@@ -59,16 +59,26 @@ public class SimpleRegExpService implements RegExpService {
             e.printStackTrace();
         }
 
-        String placeholdersRegex = "\\$\\{payment_amount\\}";
-        Pattern pattern = Pattern.compile(placeholdersRegex);
-        Matcher matcher = pattern.matcher(readLine);
+        String paymentAmountRegex = "\\$\\{payment_amount\\}";
+        Pattern pattern1 = Pattern.compile(paymentAmountRegex);
+        Matcher matcher1 = pattern1.matcher(readLine);
+
+        String balanceRegex = "\\$\\{balance}";
+        Pattern pattern2 = Pattern.compile(balanceRegex);
+
         StringBuffer result = new StringBuffer();
 
-        while (matcher.find()) {
-            matcher.appendReplacement(result, "2");
+        result = result.append(readLine);
+
+        while (matcher1.find()) {
+            result.replace(matcher1.start(), matcher1.end(), String.valueOf((int) paymentAmount));
         }
 
-        matcher.appendTail(result);
+        Matcher matcher2 = pattern2.matcher(result.toString());
+
+        while (matcher2.find()) {
+            result.replace(matcher2.start(), matcher2.end(), String.valueOf((int) balance));
+        }
 
         return result.toString();
     }
