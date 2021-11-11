@@ -13,7 +13,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return null; //TODO
+        return base.replaceAll(remove, ""); //TODO
     }
 
     /**
@@ -24,7 +24,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+        return text.endsWith("?"); //TODO
     }
 
     /**
@@ -35,7 +35,13 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        StringBuffer result = new StringBuffer();
+
+        for (int i = 0; i < elements.length; i++) {
+            result.append(elements[i]);
+        }
+
+        return result.toString(); //TODO
     }
 
     /**
@@ -47,6 +53,50 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
+        String[] strArr = text.split("\\s");
+        char[] charArray = new char[strArr.length];
+        String[] strArray = new String[strArr.length];
+
+
+
+        for (int i = 0; i < strArr.length; i++) {
+
+            //String[]  charArrayTemp = new String[strArr[i].length()];
+            char[] charArrayTemp = new char[strArr[i].length()];
+
+
+            for (int j = 0; j < strArr[i].length(); j++) {
+                //нечетные нижний регистр
+                //четные верхний регистр
+
+                if (j/2 != 0) {
+                    if (Character.isLowerCase(strArr[i].charAt(j)) == false) {
+                        charArrayTemp[j] = Character.toLowerCase(strArr[i].charAt(j));
+                    } else {
+                        charArrayTemp[j] = strArr[i].charAt(j);
+                    }
+                } else {
+                    if (Character.isUpperCase(strArr[i].charAt(j)) == false) {
+                        charArrayTemp[j] = Character.toUpperCase(strArr[i].charAt(j));
+                    } else {
+                        charArrayTemp[j] = strArr[i].charAt(j);
+                    }
+                }
+
+
+
+
+                //strArr[i].charAt(j);
+                /*if (Character.isLowerCase(strArr[i].charAt(j)) == false) {
+                }*/
+
+                /*strArr[i].charAt(j);  //символ [j]
+                        strArr[i]*/
+
+            }
+            strArray[i] = String.valueOf(charArrayTemp);
+        }
+
         return null; //TODO
     }
 
