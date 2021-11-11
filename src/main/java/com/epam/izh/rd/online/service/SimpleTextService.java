@@ -54,50 +54,43 @@ public class SimpleTextService implements TextService {
     @Override
     public String toJumpCase(String text) {
         String[] strArr = text.split("\\s");
-        char[] charArray = new char[strArr.length];
-        String[] strArray = new String[strArr.length];
+        //char[] charArray = new char[strArr.length];
 
+        String[] strArrResult = new String[strArr.length];
 
+        String result = null;
 
         for (int i = 0; i < strArr.length; i++) {
 
             //String[]  charArrayTemp = new String[strArr[i].length()];
             char[] charArrayTemp = new char[strArr[i].length()];
 
-
             for (int j = 0; j < strArr[i].length(); j++) {
                 //нечетные нижний регистр
                 //четные верхний регистр
+                int index = j + 1;
 
-                if (j/2 != 0) {
-                    if (Character.isLowerCase(strArr[i].charAt(j)) == false) {
-                        charArrayTemp[j] = Character.toLowerCase(strArr[i].charAt(j));
-                    } else {
+                if (index%2 != 0) {
+                    if (Character.isLowerCase(strArr[i].charAt(j)) == true) {
                         charArrayTemp[j] = strArr[i].charAt(j);
+                    } else {
+                        charArrayTemp[j] = Character.toLowerCase(strArr[i].charAt(j));
                     }
                 } else {
-                    if (Character.isUpperCase(strArr[i].charAt(j)) == false) {
-                        charArrayTemp[j] = Character.toUpperCase(strArr[i].charAt(j));
-                    } else {
+                    if (Character.isUpperCase(strArr[i].charAt(j)) == true) {
                         charArrayTemp[j] = strArr[i].charAt(j);
+                    } else {
+                        charArrayTemp[j] = Character.toUpperCase(strArr[i].charAt(j));
                     }
                 }
-
-
-
-
-                //strArr[i].charAt(j);
-                /*if (Character.isLowerCase(strArr[i].charAt(j)) == false) {
-                }*/
-
-                /*strArr[i].charAt(j);  //символ [j]
-                        strArr[i]*/
-
             }
-            strArray[i] = String.valueOf(charArrayTemp);
+            strArrResult[i] = String.valueOf(charArrayTemp);
+
         }
 
-        return null; //TODO
+        result = String.join(" ", strArrResult);
+
+        return result; //TODO
     }
 
     /**
