@@ -53,44 +53,42 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        String[] strArr = text.split("\\s");
-        //char[] charArray = new char[strArr.length];
+        StringBuffer resultStringBuffer = new StringBuffer();
 
-        String[] strArrResult = new String[strArr.length];
+        for (int k = 0; k < text.length(); k++) {
+            char temp = 0;
+            temp = text.charAt(k);
 
-        String result = null;
+            if (Character.toString(temp) == "\\s") {
+                resultStringBuffer.append(temp);
+                continue;
+            }
 
-        for (int i = 0; i < strArr.length; i++) {
-
-            //String[]  charArrayTemp = new String[strArr[i].length()];
-            char[] charArrayTemp = new char[strArr[i].length()];
-
-            for (int j = 0; j < strArr[i].length(); j++) {
-                //нечетные нижний регистр
-                //четные верхний регистр
-                int index = j + 1;
-
-                if (index%2 != 0) {
-                    if (Character.isLowerCase(strArr[i].charAt(j)) == true) {
-                        charArrayTemp[j] = strArr[i].charAt(j);
-                    } else {
-                        charArrayTemp[j] = Character.toLowerCase(strArr[i].charAt(j));
-                    }
+            if (k == 0) {
+                if (Character.isLowerCase(temp) == true) {
+                    resultStringBuffer.append(temp);
                 } else {
-                    if (Character.isUpperCase(strArr[i].charAt(j)) == true) {
-                        charArrayTemp[j] = strArr[i].charAt(j);
-                    } else {
-                        charArrayTemp[j] = Character.toUpperCase(strArr[i].charAt(j));
-                    }
+                    resultStringBuffer.append(Character.toLowerCase(temp));
+                }
+                continue;
+            }
+
+            if (k % 2 != 0) {
+                if (Character.isUpperCase(temp) == true) {
+                    resultStringBuffer.append(temp);
+                } else {
+                    resultStringBuffer.append(Character.toUpperCase(temp));
+                }
+            } else {
+                if (Character.isLowerCase(temp) == true) {
+                    resultStringBuffer.append(temp);
+                } else {
+                    resultStringBuffer.append(Character.toLowerCase(temp));
                 }
             }
-            strArrResult[i] = String.valueOf(charArrayTemp);
-
         }
 
-        result = String.join(" ", strArrResult);
-
-        return result; //TODO
+        return resultStringBuffer.toString(); //TODO
     }
 
     /**
@@ -102,6 +100,19 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        boolean result = false;
+
+        if (string.length() == 0 || string == "\\s+") {
+            return false;
+        }
+
+        StringBuffer resultStrBuffer = new StringBuffer();
+        String withoutSpaces = string.replaceAll("\\s+", "");
+        String allLowerCase = withoutSpaces.toLowerCase();
+        resultStrBuffer.append(allLowerCase);
+        resultStrBuffer.reverse();
+        result = allLowerCase.contentEquals(resultStrBuffer);
+
+       return result; //TODO
     }
 }
