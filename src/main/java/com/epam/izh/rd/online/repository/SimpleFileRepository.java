@@ -12,12 +12,24 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countFilesInDirectory(String path) {
-        File dir = new File(path);
+        File dir = new File("C:\\data\\java-data-handling-template\\src\\main\\resources\\testDirCountFiles");
+        File[] files = dir.listFiles();
         long count = 0;
 
 
+        for (File f : files) {
+            if (f != null) {
+                if (f.isDirectory()) {
+                    //count += dir.listFiles().length;
+                    count += countFilesInDirectory(f.getAbsolutePath());
+                } else {
+                    count++;
+                }
+            }
 
-        return 0;
+        }
+
+        return count;
     }
 
     /**
