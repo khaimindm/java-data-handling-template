@@ -1,6 +1,10 @@
 package com.epam.izh.rd.online.repository;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class SimpleFileRepository implements FileRepository {
 
@@ -12,25 +16,61 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countFilesInDirectory(String path) {
-        File dir = new File("C:\\data\\java-data-handling-template\\src\\main\\resources\\testDirCountFiles");
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(path);
+        File dir = new File(resource.getPath());
+
         File[] files = dir.listFiles();
         long count = 0;
+        long l = 0;
+        String str = null;
+        String str2 = null;
+        String str3 = null;
 
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                File file = files[i];
+
+                if (file.isFile()) {
+                    count++;
+                }
+
+                if (file.isDirectory()) {
+                    str = file.getPath();
+                    str2 = file.getParent();
+                    /*try {
+                        str2 = URLDecoder.decode(file.getPath(), StandardCharsets.UTF_8.toString());
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }*/
+                    str3 = path + "/" + file.getName();
+                }
+                    count += countFilesInDirectory(str3);
+                }
+            }
+
+        return count;
+    }
+
+    /*private long getFile(File[] files, long count) {
+
+        if (files != null)
 
         for (File f : files) {
-            if (f != null) {
+            count++;
+            File file = f;
+
                 if (f.isDirectory()) {
                     //count += dir.listFiles().length;
-                    count += countFilesInDirectory(f.getAbsolutePath());
+                    getFile(file, count);
                 } else {
                     count++;
                 }
             }
 
-        }
-
         return count;
-    }
+    }*/
+
 
     /**
      * Метод рекурсивно подсчитывает количество папок в директории, считая корень
