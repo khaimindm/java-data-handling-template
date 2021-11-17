@@ -1,10 +1,16 @@
 package com.epam.izh.rd.online.repository;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class SimpleFileRepository implements FileRepository {
 
@@ -18,14 +24,15 @@ public class SimpleFileRepository implements FileRepository {
     public long countFilesInDirectory(String path) {
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource(path);
-        File dir = new File(resource.getPath());
+        File dir = null;
+        if (resource != null) {
+            dir = new File(resource.getPath());
+        } else {
+            dir = new File(path);
+        }
 
         File[] files = dir.listFiles();
         long count = 0;
-        long l = 0;
-        String str = null;
-        String str2 = null;
-        String str3 = null;
 
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
@@ -36,41 +43,14 @@ public class SimpleFileRepository implements FileRepository {
                 }
 
                 if (file.isDirectory()) {
-                    str = file.getPath();
-                    str2 = file.getParent();
-                    /*try {
-                        str2 = URLDecoder.decode(file.getPath(), StandardCharsets.UTF_8.toString());
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }*/
-                    str3 = path + "/" + file.getName();
+                    count += countFilesInDirectory(file.getPath());
                 }
-                    count += countFilesInDirectory(str3);
-                }
+
             }
+        }
 
         return count;
     }
-
-    /*private long getFile(File[] files, long count) {
-
-        if (files != null)
-
-        for (File f : files) {
-            count++;
-            File file = f;
-
-                if (f.isDirectory()) {
-                    //count += dir.listFiles().length;
-                    getFile(file, count);
-                } else {
-                    count++;
-                }
-            }
-
-        return count;
-    }*/
-
 
     /**
      * Метод рекурсивно подсчитывает количество папок в директории, считая корень
@@ -80,7 +60,33 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countDirsInDirectory(String path) {
-        return 0;
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(path);
+        File dir = null;
+        long count = 0;
+        if (resource != null) {
+            dir = new File(resource.getPath());
+            count++;
+        } else {
+            dir = new File(path);
+        }
+
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            File file = null;
+            for (int i = 0; i < files.length; i++) {
+                file = files[i];
+
+                if (file.isDirectory()) {
+                    count++;
+                    count += countDirsInDirectory(file.getPath());
+                }
+
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -91,6 +97,32 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public void copyTXTFiles(String from, String to) {
+        String filePathFrom = new File(from).getAbsolutePath();
+        String filePathTo = new File(to).getAbsolutePath();
+
+        Path fromPath = Paths.get(filePathFrom);
+        Path toPath = Paths.get(filePathTo);
+
+        /*URL urlFrom = null;
+        URL urlTo = null;
+
+        try {
+            urlFrom = new File(filePathFrom).toURI().toURL();
+            urlTo = new File(filePathTo).toURI().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }*/
+
+        //String test = urlTo.getRef();
+        Path test = toPath.getFileName();
+
+
+        try {
+            Files.copy(fromPath, toPath, StandardCopyOption.COPY_ATTRIBUTES);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return;
     }
 
