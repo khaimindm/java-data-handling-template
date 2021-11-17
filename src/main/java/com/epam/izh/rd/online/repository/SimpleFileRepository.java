@@ -1,8 +1,6 @@
 package com.epam.izh.rd.online.repository;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -103,24 +101,25 @@ public class SimpleFileRepository implements FileRepository {
         Path fromPath = Paths.get(filePathFrom);
         Path toPath = Paths.get(filePathTo);
 
-        /*URL urlFrom = null;
-        URL urlTo = null;
+        File dir = new File(filePathTo);
+        String parent = dir.getParent();
 
-        try {
-            urlFrom = new File(filePathFrom).toURI().toURL();
-            urlTo = new File(filePathTo).toURI().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }*/
-
-        //String test = urlTo.getRef();
-        Path test = toPath.getFileName();
-
-
-        try {
-            Files.copy(fromPath, toPath, StandardCopyOption.COPY_ATTRIBUTES);
-        } catch (IOException e) {
-            e.printStackTrace();
+        File dirExists = new File(parent);
+        if (dirExists.exists()) {
+            try {
+                Files.copy(fromPath, toPath, StandardCopyOption.COPY_ATTRIBUTES);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            boolean mkdir = dirExists.mkdir();
+            if (mkdir == true) {
+                try {
+                    Files.copy(fromPath, toPath, StandardCopyOption.COPY_ATTRIBUTES);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return;
@@ -135,7 +134,23 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public boolean createFile(String path, String name) {
-        return false;
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(path);
+        File dir = new File(resource.getPath());
+
+        File file = new File( dir.toString() + "\\" + name);
+        String strPathFile = file.getAbsolutePath();
+        File pathFile = new File(strPathFile);
+
+        boolean result = false;
+
+        try {
+            result = pathFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -146,6 +161,23 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public String readFileFromResources(String fileName) {
-        return null;
+        File file = new File(
+                getClass().getClassLoader().getResource(fileName).getFile()
+        );
+
+        String pathFile = file.toString();
+
+        String readLine = null;
+        try {
+            FileReader reader = new FileReader(pathFile);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            readLine = bufferedReader.readLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return readLine;
     }
 }
