@@ -13,7 +13,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return null; //TODO
+        return base.replaceAll(remove, ""); //TODO
     }
 
     /**
@@ -24,7 +24,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+        return text.endsWith("?"); //TODO
     }
 
     /**
@@ -35,7 +35,13 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        StringBuffer result = new StringBuffer();
+
+        for (int i = 0; i < elements.length; i++) {
+            result.append(elements[i]);
+        }
+
+        return result.toString(); //TODO
     }
 
     /**
@@ -47,7 +53,42 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        return null; //TODO
+        StringBuffer resultStringBuffer = new StringBuffer();
+
+        for (int k = 0; k < text.length(); k++) {
+            char temp = 0;
+            temp = text.charAt(k);
+
+            if (Character.toString(temp) == "\\s") {
+                resultStringBuffer.append(temp);
+                continue;
+            }
+
+            if (k == 0) {
+                if (Character.isLowerCase(temp) == true) {
+                    resultStringBuffer.append(temp);
+                } else {
+                    resultStringBuffer.append(Character.toLowerCase(temp));
+                }
+                continue;
+            }
+
+            if (k % 2 != 0) {
+                if (Character.isUpperCase(temp) == true) {
+                    resultStringBuffer.append(temp);
+                } else {
+                    resultStringBuffer.append(Character.toUpperCase(temp));
+                }
+            } else {
+                if (Character.isLowerCase(temp) == true) {
+                    resultStringBuffer.append(temp);
+                } else {
+                    resultStringBuffer.append(Character.toLowerCase(temp));
+                }
+            }
+        }
+
+        return resultStringBuffer.toString(); //TODO
     }
 
     /**
@@ -59,6 +100,19 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        boolean result = false;
+
+        if (string.length() == 0 || string == "\\s+") {
+            return false;
+        }
+
+        StringBuffer resultStrBuffer = new StringBuffer();
+        String withoutSpaces = string.replaceAll("\\s+", "");
+        String allLowerCase = withoutSpaces.toLowerCase();
+        resultStrBuffer.append(allLowerCase);
+        resultStrBuffer.reverse();
+        result = allLowerCase.contentEquals(resultStrBuffer);
+
+       return result; //TODO
     }
 }
